@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Comment from './App';
 import reportWebVitals from './reportWebVitals';
 
 const comment = {
@@ -13,7 +13,7 @@ const comment = {
   },
 };
 ReactDOM.render(
-  <App
+  <Comment
     date={comment.date}
     text={comment.text}
     author={comment.author}

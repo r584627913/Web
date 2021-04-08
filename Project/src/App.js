@@ -21,7 +21,7 @@ function UserInfo(props) {
   );
 }
 
-function App(props) {
+function Comment(props) {
   return (
     <div className="Comment">
       <UserInfo user={props.author} />
@@ -33,4 +33,4 @@ function App(props) {
   );
 }
 
-export default App;
+export default Comment;
