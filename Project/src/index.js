@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Clock from './App';
+import LoginControl from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <Clock />,
+  <LoginControl />,
   document.getElementById('root')
 );
 
