@@ -14,14 +14,3 @@ function open_db()
         return $e->getMessage();
     }
 }
-
-// $dbhost = "db.mis.kuas.edu.tw";
-// $dbname = "s1106137135";
-// $dbuser = "s1106137135";
-// $dbpw = "F129467905";
-// try {
-//     $mysqli = new mysqli($dbhost, $dbuser, $dbpw, $dbname);
-//     echo "connected";
-// } catch (Exception $e) {
-//     echo $e->getMessage();
-// }

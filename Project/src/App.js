@@ -5,7 +5,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      productName: "default",
+      productName: "",
       ownerID: "",
       peice: null,
       date: ""
@@ -20,17 +20,15 @@ class App extends React.Component {
     $.ajax({
       url: "https://fs.mis.kuas.edu.tw/~s1106137135/webPHP/showProduct.php",
       type: 'POST',
-      // data: {
-
-      // },
       success: function (data) {
+        data = JSON.parse(data);
         react.setState({
           productName: data
         });
       },
       error: function (xhr, status, err) {
         react.setState({
-          productName: err
+          productName: xhr + status + err
         });
       }
     });
@@ -64,24 +62,22 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.productName);
     return (
-      this.state.productName
-      // <form onSubmit={this.submitHandler} >
-      //   <h1>Hello {this.state.username} {this.state.age}</h1>
-      //   <p>Enter your name:</p>
-      //   <input
-      //     type='text'
-      //     name='username'
-      //     onChange={this.changeHandler}
-      //   />
-      //   <p>Enter your age:</p>
-      //   <input
-      //     type='text'
-      //     name='age'
-      //     onChange={this.changeHandler}
-      //   />
-      // </form>
+      <form onSubmit={this.submitHandler} >
+        <h1>Hello {this.state.username} {this.state.age}</h1>
+        <p>Enter your name:</p>
+        <input
+          type='text'
+          name='username'
+          onChange={this.changeHandler}
+        />
+        <p>Enter your age:</p>
+        <input
+          type='text'
+          name='age'
+          onChange={this.changeHandler}
+        />
+      </form>
     );
   }
 }

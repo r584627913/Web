@@ -7,8 +7,7 @@ try {
     $sql = "SELECT * FROM `product`";
     $result = $conn->query($sql);
     if ($result) {
-        $msg = json_encode($result->fetch_assoc());
-        // $msg = $result;
+        $msg = json_encode($result->fetch_all());
     } else {
         $msg = "ERROR";
     }
