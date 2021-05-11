@@ -8,7 +8,8 @@ class App extends React.Component {
       productName: "",
       ownerID: "",
       peice: null,
-      date: ""
+      date: "",
+      data: null
     };
 
     this.submitHandler = this.submitHandler.bind(this);
@@ -23,12 +24,12 @@ class App extends React.Component {
       success: function (data) {
         data = JSON.parse(data);
         react.setState({
-          productName: data
+          data: data
         });
       },
       error: function (xhr, status, err) {
         react.setState({
-          productName: xhr + status + err
+          data: xhr + status + err
         });
       }
     });
@@ -62,22 +63,34 @@ class App extends React.Component {
   }
 
   render() {
+    let merch = [];
+    if (this.state.data !== null) {
+      for (let d of this.state.data) {
+        let row = (
+          <tr>
+            <td>{d[1]}</td>
+            <td>{d[2]}</td>
+            <td>{d[3]}</td>
+            <td>{d[4]}</td>
+          </tr>
+        );
+        merch.push(row);
+      }
+    }
     return (
-      <form onSubmit={this.submitHandler} >
-        <h1>Hello {this.state.username} {this.state.age}</h1>
-        <p>Enter your name:</p>
-        <input
-          type='text'
-          name='username'
-          onChange={this.changeHandler}
-        />
-        <p>Enter your age:</p>
-        <input
-          type='text'
-          name='age'
-          onChange={this.changeHandler}
-        />
-      </form>
+      <table>
+        <thead>
+          <tr>
+            <th>商品名稱</th>
+            <th>賣家</th>
+            <th>價格</th>
+            <th>上架日期</th>
+          </tr>
+        </thead>
+        <tbody>
+          {merch}
+        </tbody>
+      </table>
     );
   }
 }
