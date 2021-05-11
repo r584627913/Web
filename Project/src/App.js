@@ -24,9 +24,7 @@ class App extends React.Component {
         });
       },
       error: function (xhr, status, err) {
-        react.setState({
-          data: xhr + status + err
-        });
+        console.log(xhr + status + err);
       }
     });
   }
