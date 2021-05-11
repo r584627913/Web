@@ -5,10 +5,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      productName: "",
-      ownerID: "",
-      peice: null,
-      date: "",
       data: null
     };
 
@@ -39,7 +35,7 @@ class App extends React.Component {
     let react = this;
     $.ajax({
       url: "showProduct.php",
-      type: 'GET',
+      type: 'POST',
       // data: {
       //   'form_email': this.state.contactEmail,
       //   'form_msg': this.state.contactMessage
@@ -63,18 +59,18 @@ class App extends React.Component {
   }
 
   render() {
-    let merch = [];
+    let merches = [];
     if (this.state.data !== null) {
-      for (let d of this.state.data) {
+      for (let merch of this.state.data) {
         let row = (
-          <tr>
-            <td>{d[1]}</td>
-            <td>{d[2]}</td>
-            <td>{d[3]}</td>
-            <td>{d[4]}</td>
+          <tr key={merch[0]}>
+            <td key={1}>{merch[1]}</td>
+            <td key={2}>{merch[2]}</td>
+            <td key={3}>{merch[3]}</td>
+            <td key={4}>{merch[4]}</td>
           </tr>
         );
-        merch.push(row);
+        merches.push(row);
       }
     }
     return (
@@ -88,7 +84,7 @@ class App extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {merch}
+          {merches}
         </tbody>
       </table>
     );
