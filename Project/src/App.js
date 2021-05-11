@@ -1,37 +1,43 @@
 import React from 'react';
 
-
 class App extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = { data: '預設資料...' };
-    this.updateState = this.updateState.bind(this);
-  };
-
-  updateState = (e) => {
-    this.setState({ data: e.target.value });
+    this.state = {
+      username: '',
+      age: null,
+    };
   }
-
+  myChangeHandler = (event) => {
+    let name = event.target.name;
+    let val = event.target.value;
+    if (name === "age") {
+      if (isNaN(val)) {
+        event.target.value = event.target.value.substring(0, event.target.value.length - 1);
+        val = event.target.value;
+        alert("Your age must be a number.");
+      }
+    }
+    this.setState({ [name]: val });
+  }
   render() {
     return (
-      <div>
-        <Content myDataProp={this.state.data} updateStateProp={this.updateState} />
-      </div>
+      <form>
+        <h1>Hello {this.state.username} {this.state.age}</h1>
+        <p>Enter your name:</p>
+        <input
+          type='text'
+          name='username'
+          onChange={this.myChangeHandler}
+        />
+        <p>Enter your age:</p>
+        <input
+          type='text'
+          name='age'
+          onChange={this.myChangeHandler}
+        />
+      </form>
     );
   }
 }
-
-class Content extends React.Component {
-  render() {
-    return (
-      <div>
-        <input type="text" value={this.props.myDataProp} onChange={this.props.updateStateProp} />
-        <h3>{this.props.myDataProp}</h3>
-      </div>
-    );
-  }
-}
-
-
-export default App;
+export default App
