@@ -26,6 +26,19 @@ class MerchForm extends React.Component {
                 console.log(xhr + status + err);
             }
         });
+
+        // let temp = [];
+        // for (let i = 0; i < Number.MAX_VALUE; i++) {
+        //     let t = [];
+        //     for (let j = 0; j < 5; j++) {
+        //         t.push(i);
+        //     }
+        //     temp.push(t);
+        // }
+
+        // this.setState({
+        //     data: temp
+        // });
     }
 
     submitHandler = (event) => {
