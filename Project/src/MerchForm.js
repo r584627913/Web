@@ -71,7 +71,7 @@ class MerchForm extends React.Component {
     }
 
     render() {
-        let merches = [];
+        var merches = [];
         if (this.state.data !== null) {
             merches = this.state.data.map(
                 function (merch) {
@@ -87,20 +87,22 @@ class MerchForm extends React.Component {
             )
         }
         return (
-            <table>
-                <thead>
-                    <tr>
-                        <th>商品名稱</th>
-                        <th>賣家</th>
-                        <th>價格</th>
-                        <th>上架日期</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {merches}
-                </tbody>
-            </table>
+            <form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>商品名稱</th>
+                            <th>賣家</th>
+                            <th>價格</th>
+                            <th>上架日期</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {merches}
+                    </tbody>
+                </table>
+            </form>
         );
     }
 }
-export default MerchForm
+export default MerchForm;

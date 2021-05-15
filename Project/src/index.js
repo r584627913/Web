@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import MerchForm from './MerchForm';
+import Main from './Main';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <MerchForm />,
+  <Main />,
   document.getElementById('root')
 );
 
