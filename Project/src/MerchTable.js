@@ -1,21 +1,26 @@
 import React from 'react';
 import $ from 'jquery';
 
-class MerchForm extends React.Component {
+class MerchTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             data: null
         };
-        // this.submitHandler = this.submitHandler.bind(this);
-        // this.changeHandler = this.changeHandler.bind(this);
     }
+
+    // componentWillUnmount = () => {
+    //     this.setState({
+    //         data: null
+    //     });
+    // }
 
     componentDidMount = () => {
         let react = this;
         $.ajax({
             url: "https://fs.mis.kuas.edu.tw/~s1106137135/webPHP/showProduct.php",
             type: 'POST',
+            async: false,
             success: function (data) {
                 data = JSON.parse(data);
                 react.setState({
@@ -26,19 +31,6 @@ class MerchForm extends React.Component {
                 console.log(xhr + status + err);
             }
         });
-
-        // let temp = [];
-        // for (let i = 0; i < Number.MAX_VALUE; i++) {
-        //     let t = [];
-        //     for (let j = 0; j < 5; j++) {
-        //         t.push(i);
-        //     }
-        //     temp.push(t);
-        // }
-
-        // this.setState({
-        //     data: temp
-        // });
     }
 
     submitHandler = (event) => {
@@ -87,22 +79,20 @@ class MerchForm extends React.Component {
             )
         }
         return (
-            <form>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>商品名稱</th>
-                            <th>賣家</th>
-                            <th>價格</th>
-                            <th>上架日期</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {merches}
-                    </tbody>
-                </table>
-            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>商品名稱</th>
+                        <th>賣家</th>
+                        <th>價格</th>
+                        <th>上架日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {merches}
+                </tbody>
+            </table>
         );
     }
 }
-export default MerchForm;
+export default MerchTable;
