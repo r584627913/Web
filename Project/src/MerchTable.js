@@ -14,7 +14,7 @@ class MerchTable extends React.Component {
         $.ajax({
             url: "https://fs.mis.kuas.edu.tw/~s1106137135/webPHP/showProduct.php",
             type: 'POST',
-            async: false,
+            // async: false,
             success: function (data) {
                 data = JSON.parse(data);
                 react.setState({

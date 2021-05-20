@@ -18,19 +18,19 @@ class DeletePage extends React.Component {
             arr.splice(arr.indexOf(event.target.value), 1)
         }
         this.setState({ selected: arr });
-        console.log(this.state.selected.toString());
+        // console.log(this.state.selected.toString());
     }
 
     submitHandler = () => {
         $.ajax({
             url: "https://fs.mis.kuas.edu.tw/~s1106137135/webPHP/doDelete.php",
             type: 'POST',
-            async: false,
+            // async: false,
             data: {
                 'product_id': this.state.selected.toString()
             },
             success: function (data) {
-                alert(data);
+                console.log(data);
             },
             error: function (xhr, status, err) {
                 console.log(xhr, status);
