@@ -14,6 +14,13 @@ class InsertPage extends React.Component {
     changeHandler = (event) => {
         let name = event.target.name;
         let val = event.target.value;
+        if (name === "price") {
+            if (isNaN(val)) {
+                event.target.value = event.target.value.substring(0, event.target.value.length - 1);
+                val = event.target.value;
+                alert("價格只能為數字");
+            }
+        }
         this.setState({
             [name]: val
         });
@@ -74,17 +81,12 @@ class InsertPage extends React.Component {
                                 />
                             </td>
                         </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input
-                                    type="submit"
-                                    value="確認新增"
-                                />
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
+                <input
+                    type="submit"
+                    value="確認新增"
+                />
             </form>
         );
     }

@@ -5,15 +5,9 @@ class MerchTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null
+            data: []
         };
     }
-
-    // componentWillUnmount = () => {
-    //     this.setState({
-    //         data: null
-    //     });
-    // }
 
     componentDidMount = () => {
         let react = this;
@@ -30,35 +24,6 @@ class MerchTable extends React.Component {
             error: function (xhr, status, err) {
                 console.log(xhr + status + err);
             }
-        });
-    }
-
-    submitHandler = (event) => {
-        let react = this;
-        $.ajax({
-            url: "showProduct.php",
-            type: 'POST',
-            // data: {
-            //   'form_email': this.state.contactEmail,
-            //   'form_msg': this.state.contactMessage
-            // },
-            success: function (data) {
-                react.setState({
-                    productName: "success"
-                });
-            },
-            error: function (xhr, status, err) {
-                console.log(xhr, status);
-                console.log(err);
-            }
-        });
-    }
-
-    changeHandler = (event) => {
-        let name = event.target.name;
-        let val = event.target.value;
-        this.setState({
-            [name]: val
         });
     }
 

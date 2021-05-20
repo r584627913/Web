@@ -2,6 +2,7 @@ import React from 'react';
 // import $ from 'jquery';
 import MerchTable from "./MerchTable"
 import InsertPage from "./InsertPage"
+import DeletePage from "./DeletePage"
 
 function Action(props) {
     switch (props.action) {
@@ -13,6 +14,11 @@ function Action(props) {
         case "insert":
             return (
                 <InsertPage />
+            );
+
+        case "delete":
+            return (
+                <DeletePage />
             );
 
         default:
