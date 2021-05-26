@@ -22,12 +22,13 @@ class DeletePage extends React.Component {
     }
 
     submitHandler = () => {
+        let react = this;
         $.ajax({
             url: "https://fs.mis.kuas.edu.tw/~s1106137135/webPHP/doDelete.php",
             type: 'POST',
             async: false,
             data: {
-                'product_id': this.state.selected.toString()
+                'product_id': react.state.selected.toString()
             },
             success: function (data) {
                 alert(data);

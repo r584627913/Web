@@ -27,14 +27,15 @@ class InsertPage extends React.Component {
     }
 
     submitHandler = () => {
+        let react = this;
         $.ajax({
             url: "https://fs.mis.kuas.edu.tw/~s1106137135/webPHP/doInsert.php",
             type: 'POST',
             async: false,
             data: {
-                'product_name': this.state.product_name,
-                'owner_id': this.state.owner_id,
-                'price': this.state.price
+                'product_name': react.state.product_name,
+                'owner_id': react.state.owner_id,
+                'price': react.state.price
             },
             success: function (data) {
                 alert(data);

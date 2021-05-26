@@ -1,5 +1,4 @@
 import React from 'react';
-// import $ from 'jquery';
 import MerchTable from "./MerchTable"
 import InsertPage from "./InsertPage"
 import DeletePage from "./DeletePage"
@@ -49,12 +48,6 @@ class Main extends React.Component {
         });
     }
 
-    // update = () => {
-    //     this.setState({
-    //         action: "update"
-    //     });
-    // }
-
     delete = () => {
         this.setState({
             action: "delete"
@@ -71,9 +64,6 @@ class Main extends React.Component {
                 <button onClick={this.insert}>
                     新增
                 </button>
-                {/* <button onClick={this.update}>
-                    修改
-                </button> */}
                 <button onClick={this.delete}>
                     刪除
                 </button>
