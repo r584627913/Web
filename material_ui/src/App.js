@@ -3,6 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 
 function App() {
 
@@ -12,6 +14,16 @@ function App() {
         setChecked(event.target.checked);
     };
 
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            '& > *': {
+                margin: theme.spacing(1),
+                width: '25ch',
+            },
+        },
+    }));
+
+    const classes = useStyles();
     return (
         <div className="App">
             <header className="App-header">
@@ -23,6 +35,11 @@ function App() {
                     onChange={handleChange}
                     inputProps={{ 'aria-label': 'primary checkbox' }}
                 />
+                <form className={classes.root} noValidate autoComplete="off">
+                    <TextField id="standard-basic" label="Standard" />
+                    <TextField id="filled-basic" label="Filled" variant="filled" />
+                    <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+                </form>
                 <img src={logo} className="App-logo" alt="logo" />
             </header>
         </div>
