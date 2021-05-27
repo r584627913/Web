@@ -7,6 +7,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <Button variant="outlined" color="primary">
+          Primary
+        </Button>
         <img src={logo} className="App-logo" alt="logo" />
       </header>
     </div>
