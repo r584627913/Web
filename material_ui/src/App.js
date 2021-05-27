@@ -40,6 +40,18 @@ function App() {
                     <TextField id="filled-basic" label="Filled" variant="filled" />
                     <TextField id="outlined-basic" label="Outlined" variant="outlined" />
                 </form>
+                <form className={classes.container} noValidate>
+                    <TextField
+                        id="date"
+                        label="Birthday"
+                        type="date"
+                        defaultValue="2017-05-24"
+                        className={classes.textField}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </form>
                 <img src={logo} className="App-logo" alt="logo" />
             </header>
         </div>
