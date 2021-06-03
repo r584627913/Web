@@ -13,7 +13,7 @@ class App extends React.Component {
     this.setState({ data: e.target.value });
   }
 
-  render() {
+  render = () => {
     return (
       <div>
         <Content myDataProp={this.state.data} updateStateProp={this.updateState} />
@@ -23,7 +23,7 @@ class App extends React.Component {
 }
 
 class Content extends React.Component {
-  render() {
+  render = () => {
     return (
       <div>
         <input type="text" value={this.props.myDataProp} onChange={this.props.updateStateProp} />
