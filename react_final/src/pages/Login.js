@@ -1,4 +1,5 @@
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -6,10 +7,47 @@ import {
   Box,
   Button,
   Container,
-  Link,
   TextField,
   Typography
 } from '@material-ui/core';
+
+const userData = {
+  EmpId: '',
+  Phone: ''
+};
+
+const submitHandler = async (e) => {
+  e.preventDefault();
+  fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/doLogin.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  })
+    // .then((res) => res.json())
+    .then((res) => {
+      console.log(res.json());
+    })
+    // .then((data) => {
+    //   if (data.success) {
+    //     // alert(data.msg);
+    //     window.location.href = 'app/dashboard';
+    //   }
+    // })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const changeHandler = (e) => {
+  const { name, value } = e.target;
+  if (name === 'id') {
+    userData.EmpId = value;
+  } else if (name === 'phone') {
+    userData.Phone = value;
+  }
+};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,8 +73,8 @@ const Login = () => {
               password: ''
             }}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-              password: Yup.string().max(255).required('Password is required')
+              email: Yup.string().max(255).required('ID is required'),
+              password: Yup.string().max(255).required('Phone number is required')
             })}
             onSubmit={() => {
               navigate('/app/dashboard', { replace: true });
@@ -45,13 +83,9 @@ const Login = () => {
             {({
               errors,
               handleBlur,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-              touched,
-              values
+              touched
             }) => (
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={submitHandler}>
                 <Box sx={{ mb: 3 }}>
                   <Typography
                     color="textPrimary"
@@ -71,39 +105,34 @@ const Login = () => {
                     color="textSecondary"
                     variant="body1"
                   >
-                    Login with email address
+                    Sign in with your ID
                   </Typography>
                 </Box>
                 <TextField
                   error={Boolean(touched.email && errors.email)}
                   fullWidth
                   helperText={touched.email && errors.email}
-                  label="Email Address"
+                  label="Your ID"
                   margin="normal"
-                  name="email"
+                  name="id"
                   onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="email"
-                  value={values.email}
+                  onChange={changeHandler}
                   variant="outlined"
                 />
                 <TextField
                   error={Boolean(touched.password && errors.password)}
                   fullWidth
                   helperText={touched.password && errors.password}
-                  label="Password"
+                  label="Your Phone Number"
                   margin="normal"
-                  name="password"
+                  name="phone"
                   onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="password"
-                  value={values.password}
+                  onChange={changeHandler}
                   variant="outlined"
                 />
                 <Box sx={{ py: 2 }}>
                   <Button
                     color="primary"
-                    disabled={isSubmitting}
                     fullWidth
                     size="large"
                     type="submit"
@@ -112,20 +141,6 @@ const Login = () => {
                     Sign in now
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Don&apos;t have an account?
-                  {' '}
-                  <Link
-                    component={RouterLink}
-                    to="/register"
-                    variant="h6"
-                  >
-                    Sign up
-                  </Link>
-                </Typography>
               </form>
             )}
           </Formik>

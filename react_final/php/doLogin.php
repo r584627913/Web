@@ -15,22 +15,17 @@ require 'db_connection.php';
 $data = json_decode(file_get_contents("php://input"));
 
 if (
-    isset($data->id)
-    && isset($data->user_name)
-    && isset($data->user_email)
-    && is_numeric($data->id)
-    && !empty(trim($data->user_name))
-    && !empty(trim($data->user_email))
+    isset($data->EmpId)
+    && isset($data->Phone)
 ) {
-    $username = mysqli_real_escape_string($db_connection, trim($data->user_name));
-    $useremail = mysqli_real_escape_string($db_connection, trim($data->user_email));
-    $updateUser = mysqli_query($db_connection, "UPDATE `employee` SET `EmpName`='$username', `JobTitle`='$useremail' WHERE `EmpId`='$data->id'");
-    if ($updateUser) {
-        echo json_encode(["success" => 1, "msg" => "User Updated."]);
+    $id = mysqli_real_escape_string($db_connection, trim($data->EmpId));
+    $phone = mysqli_real_escape_string($db_connection, trim($data->Phone));
+    $employee = mysqli_query($db_connection, "SELECT * FROM `employee` WHERE `EmpId`= '$id' AND `Phone`= '$phone'");
+    if ($employee) {
+        echo json_encode(["success" => 1, "msg" => "Logged in"]);
     } else {
-        echo json_encode(["success" => 0, "msg" => "User Not Updated!"]);
+        echo json_encode(["success" => 0, "msg" => "Login failed"]);
     }
 } else {
     echo json_encode(["success" => 0, "msg" => "Please fill all the required fields!"]);
 }
-?>
