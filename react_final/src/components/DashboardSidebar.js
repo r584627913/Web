@@ -25,7 +25,7 @@ import NavItem from './NavItem';
 
 const user = {
   avatar: '/static/images/avatars/guest.png',
-  jobTitle: 'Please log in',
+  jobTitle: 'Please Log In',
   name: 'Guest'
 };
 
