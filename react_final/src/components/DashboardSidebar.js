@@ -29,6 +29,19 @@ const user = {
   name: 'Guest'
 };
 
+fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/test.php')
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.success) {
+      const currentUser = data.users[0];
+      user.jobTitle = currentUser.JobTitle;
+      user.name = currentUser.EmpName;
+    }
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 const items = [
   {
     href: '/app/dashboard',

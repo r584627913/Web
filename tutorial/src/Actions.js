@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 export const Actions = () => {
   let [users, setUsers] = useState([]);
 
-    //userLength is for showing the Data Loading message.
+  //userLength is for showing the Data Loading message.
   let [userLength, setUserLength] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost/php-react/all-users.php")
+    fetch("https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/all-users.php")
       .then((res) => {
         return res.json();
       })
@@ -26,7 +26,7 @@ export const Actions = () => {
 
   // Inserting a new user into the database.
   const insertUser = (newUser) => {
-    fetch("http://localhost/php-react/add-user.php", {
+    fetch("https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/add-user.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export const Actions = () => {
 
   // Updating a user.
   const updateUser = (userData) => {
-    fetch("http://localhost/php-react/update-user.php", {
+    fetch("https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/update-user.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -115,11 +115,11 @@ export const Actions = () => {
 
   // Deleting a user.
   const deleteUser = (theID) => {
-      // filter outing the user.
+    // filter outing the user.
     let userDeleted = users.filter((user) => {
       return user.id !== theID;
     });
-    fetch("http://localhost/php-react/delete-user.php", {
+    fetch("https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/delete-user.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
