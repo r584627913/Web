@@ -25,16 +25,13 @@ const submitHandler = async (e) => {
     },
     body: JSON.stringify(userData),
   })
-    // .then((res) => res.json())
-    .then((res) => {
-      console.log(res.json());
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        // alert(data.msg);
+        window.location.href = 'app/dashboard';
+      }
     })
-    // .then((data) => {
-    //   if (data.success) {
-    //     // alert(data.msg);
-    //     window.location.href = 'app/dashboard';
-    //   }
-    // })
     .catch((err) => {
       console.log(err);
     });
