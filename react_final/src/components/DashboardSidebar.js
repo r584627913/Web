@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -29,18 +29,7 @@ const user = {
   name: 'Guest'
 };
 
-// fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/test.php')
-//   .then((res) => res.json())
-//   .then((data) => {
-//     if (data.success) {
-//       const currentUser = data.users[0];
-//       user.jobTitle = currentUser.JobTitle;
-//       user.name = currentUser.EmpName;
-//     }
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
+export const currentUser = React.createContext(user);
 
 const items = [
   {
@@ -87,7 +76,7 @@ const items = [
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {
   const location = useLocation();
-
+  console.log(currentUser);
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -10,8 +10,9 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
+import { currentUser } from 'src/components/DashboardSidebar';
 
-const userData = {
+const submitData = {
   EmpId: '',
   Phone: ''
 };
@@ -23,31 +24,37 @@ const submitHandler = async (e) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(userData),
+    body: JSON.stringify(submitData),
   })
     .then((res) => res.json())
     .then((data) => {
       if (data.success) {
-        // alert(data.msg);
-        window.location.href = 'app/dashboard';
+        console.log(data.msg);
+      } else {
+        alert(data.msg);
       }
     })
     .catch((err) => {
       console.log(err);
     });
+
+  const userData = useContext(currentUser);
+  console.log(userData);
 };
 
 const changeHandler = (e) => {
   const { name, value } = e.target;
   if (name === 'id') {
-    userData.EmpId = value;
+    submitData.EmpId = value;
   } else if (name === 'phone') {
-    userData.Phone = value;
+    submitData.Phone = value;
   }
 };
 
 const Login = () => {
   const navigate = useNavigate();
+  // const userData = useContext(currentUser);
+  // console.log(userData);
 
   return (
     <>
@@ -133,7 +140,10 @@ const Login = () => {
                     fullWidth
                     size="large"
                     type="submit"
+                    onClick={submitHandler}
                     variant="contained"
+                    component={RouterLink}
+                    to="/app/dashboard"
                   >
                     Sign in now
                   </Button>
