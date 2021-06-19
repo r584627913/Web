@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -23,10 +23,18 @@ import {
 } from 'react-feather';
 import NavItem from './NavItem';
 
-const user = {
+let user = {
   avatar: '/static/images/avatars/guest.png',
-  jobTitle: 'Please Log In',
-  name: 'Guest'
+  EmpId: '',
+  EmpName: 'Guest',
+  JobTitle: 'Please Log In',
+  DeptId: '',
+  City: '',
+  Address: '',
+  Phone: '',
+  ZipCode: '',
+  MonthSalary: '',
+  AnnualLeave: ''
 };
 
 export const currentUser = React.createContext(user);
@@ -75,8 +83,8 @@ const items = [
 ];
 
 const DashboardSidebar = ({ onMobileClose, openMobile }) => {
+  user = useContext(currentUser);
   const location = useLocation();
-  console.log(currentUser);
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
@@ -113,13 +121,13 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="h5"
         >
-          {user.name}
+          {user.EmpName}
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
         >
-          {user.jobTitle}
+          {user.JobTitle}
         </Typography>
       </Box>
       <Divider />

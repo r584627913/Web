@@ -17,31 +17,6 @@ const submitData = {
   Phone: ''
 };
 
-const submitHandler = async (e) => {
-  e.preventDefault();
-  fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/doLogin.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(submitData),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.success) {
-        console.log(data.msg);
-      } else {
-        alert(data.msg);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  const userData = useContext(currentUser);
-  console.log(userData);
-};
-
 const changeHandler = (e) => {
   const { name, value } = e.target;
   if (name === 'id') {
@@ -53,8 +28,38 @@ const changeHandler = (e) => {
 
 const Login = () => {
   const navigate = useNavigate();
-  // const userData = useContext(currentUser);
-  // console.log(userData);
+  const userData = useContext(currentUser);
+  const submitHandler = () => {
+    // e.preventDefault();
+    fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/doLogin.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(submitData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          const user = data.user[0];
+          userData.EmpId = user.EmpId;
+          userData.EmpName = user.EmpName;
+          userData.JobTitle = user.JobTitle;
+          userData.DeptId = user.DeptId;
+          userData.City = user.City;
+          userData.Address = user.Address;
+          userData.Phone = user.Phone;
+          userData.ZipCode = user.ZipCode;
+          userData.MonthSalary = user.MonthSalary;
+          userData.AnnualLeave = user.AnnualLeave;
+        } else {
+          alert(data.msg);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>

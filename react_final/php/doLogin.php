@@ -22,7 +22,8 @@ if (
     $phone = mysqli_real_escape_string($db_connection, trim($data->Phone));
     $employee = mysqli_query($db_connection, "SELECT * FROM `employee` WHERE `EmpId`= '$id' AND `Phone`= '$phone'");
     if (mysqli_num_rows($employee) == 1) {
-        echo json_encode(["success" => 1, "msg" => "Logged in"]);
+        $user = mysqli_fetch_all($employee, MYSQLI_ASSOC);
+        echo json_encode(["success" => 1, "msg" => "Logged in", "user" =>  $user]);
     } else {
         echo json_encode(["success" => 0, "msg" => "Login failed"]);
     }
