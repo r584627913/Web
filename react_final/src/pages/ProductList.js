@@ -8,7 +8,8 @@ import {
   CardContent,
   TextField,
   InputAdornment,
-  SvgIcon
+  SvgIcon,
+  Grid
 } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,7 +20,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Search as SearchIcon } from 'react-feather';
 import { useState, useEffect } from 'react';
-// import products from 'src/__mocks__/products';
 
 const useStyles = makeStyles({
   table: {
@@ -30,12 +30,23 @@ const useStyles = makeStyles({
 const ProductList = () => {
   const classes = useStyles();
   const [productList, setProductList] = useState();
-  useEffect(() => {
+  const [keyword, setKeyword] = useState();
+
+  const changeHandler = (e) => {
+    if (e.target.name === 'keyword') {
+      setKeyword(e.target.value);
+    }
+  };
+
+  const search = () => {
+    console.log(keyword);
     fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/searchProduct.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
+      cache: 'no-store',
+      body: JSON.stringify({ keyword })
     })
       .then((res) => res.json())
       .then((data) => {
@@ -44,20 +55,47 @@ const ProductList = () => {
       .catch((err) => {
         setProductList(err);
       });
+    console.log(productList);
+  };
+
+  const insert = () => {
+    // fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/searchProduct.php', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ keyword })
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setProductList(data);
+    //   })
+    //   .catch((err) => {
+    //     setProductList(err);
+    //   });
+    setKeyword();
+    console.log(keyword);
+  };
+
+  useEffect(() => {
+    search();
   }, []);
   let list = (<></>);
-  if (productList !== undefined) {
+  if (productList) {
     const arr = productList.product;
-    list = (arr.map((product) => (
-      <TableRow key={product.ProdID}>
-        <TableCell>{product.ProdName}</TableCell>
-        <TableCell>{product.ProdID}</TableCell>
-        <TableCell>{product.UnitPrice}</TableCell>
-        <TableCell>{product.Cost}</TableCell>
-      </TableRow>
-    ))
-    );
+    if (arr) {
+      list = (arr.map((product) => (
+        <TableRow key={product.ProdID}>
+          <TableCell>{product.ProdName}</TableCell>
+          <TableCell>{product.ProdID}</TableCell>
+          <TableCell>{product.UnitPrice}</TableCell>
+          <TableCell>{product.Cost}</TableCell>
+        </TableRow>
+      ))
+      );
+    }
   }
+
   return (
     <>
       <Helmet>
@@ -79,11 +117,6 @@ const ProductList = () => {
               }}
             >
               <Button
-                variant="contained"
-              >
-                Add new product
-              </Button>
-              <Button
                 sx={{ mx: 2 }}
                 variant="contained"
               >
@@ -100,34 +133,84 @@ const ProductList = () => {
               <Box>
                 <Card>
                   <CardContent>
-                    <Box sx={{ maxWidth: 500 }}>
-                      <TextField
-                        fullWidth
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <SvgIcon
-                                fontSize="small"
-                                color="action"
-                              >
-                                <SearchIcon />
-                              </SvgIcon>
-                            </InputAdornment>
-                          )
-                        }}
-                        placeholder="Search product"
-                        variant="outlined"
-                      />
-                    </Box>
+                    <Grid container>
+                      <Grid item>
+                        <TextField
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SvgIcon
+                                  fontSize="small"
+                                  color="action"
+                                >
+                                  <SearchIcon />
+                                </SvgIcon>
+                              </InputAdornment>
+                            )
+                          }}
+                          placeholder="Search product"
+                          variant="outlined"
+                          onChange={changeHandler}
+                          name="keyword"
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          onClick={search}
+                        >
+                          Search products
+                        </Button>
+                      </Grid>
+                    </Grid>
                   </CardContent>
                 </Card>
               </Box>
+            </Box>
+            <Box sx={{ mt: 3 }}>
               <Box>
-                <Button
-                  variant="contained"
-                >
-                  Search products
-                </Button>
+                <Card>
+                  <CardContent>
+                    <Grid container>
+                      <Grid item>
+                        <TextField
+                          placeholder="Product Name"
+                          variant="outlined"
+                          onChange={changeHandler}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          placeholder="Product ID"
+                          variant="outlined"
+                          onChange={changeHandler}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          placeholder="Unit Price"
+                          variant="outlined"
+                          onChange={changeHandler}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <TextField
+                          placeholder="Cost"
+                          variant="outlined"
+                          onChange={changeHandler}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          onClick={insert}
+                        >
+                          Add new product
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </CardContent>
+                </Card>
               </Box>
             </Box>
           </Box>

@@ -39,7 +39,6 @@ const AccountProfileDetails = (props) => {
                 name="name"
                 value={user.EmpName}
                 variant="outlined"
-                disabled="true"
               />
             </Grid>
             <Grid
@@ -53,7 +52,6 @@ const AccountProfileDetails = (props) => {
                 name="phone"
                 value={user.Phone}
                 variant="outlined"
-                disabled="true"
               />
             </Grid>
             <Grid
@@ -67,7 +65,6 @@ const AccountProfileDetails = (props) => {
                 name="deptId"
                 value={user.DeptId}
                 variant="outlined"
-                disabled="true"
               />
             </Grid>
             <Grid
@@ -81,7 +78,6 @@ const AccountProfileDetails = (props) => {
                 name="jobTitle"
                 value={user.JobTitle}
                 variant="outlined"
-                disabled="true"
               />
             </Grid>
             <Grid
@@ -95,7 +91,6 @@ const AccountProfileDetails = (props) => {
                 name="city"
                 value={user.City}
                 variant="outlined"
-                disabled="true"
               />
             </Grid>
             <Grid
@@ -109,7 +104,6 @@ const AccountProfileDetails = (props) => {
                 name="address"
                 value={user.Address}
                 variant="outlined"
-                disabled="true"
               />
             </Grid>
           </Grid>

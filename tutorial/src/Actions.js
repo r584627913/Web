@@ -138,6 +138,7 @@ export const Actions = () => {
         } else {
           alert(data.msg);
         }
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
