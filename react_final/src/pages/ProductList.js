@@ -31,21 +31,13 @@ const ProductList = () => {
   const classes = useStyles();
   const [productList, setProductList] = useState();
   const [keyword, setKeyword] = useState();
-
-  const changeHandler = (e) => {
-    if (e.target.name === 'keyword') {
-      setKeyword(e.target.value);
-    }
-  };
-
+  let newProduct = {};
   const search = () => {
-    console.log(keyword);
     fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/searchProduct.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      cache: 'no-store',
       body: JSON.stringify({ keyword })
     })
       .then((res) => res.json())
@@ -55,31 +47,46 @@ const ProductList = () => {
       .catch((err) => {
         setProductList(err);
       });
-    console.log(productList);
   };
 
   const insert = () => {
-    // fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/searchProduct.php', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ keyword })
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setProductList(data);
-    //   })
-    //   .catch((err) => {
-    //     setProductList(err);
-    //   });
-    setKeyword();
-    console.log(keyword);
+    fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/insertProduct.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newProduct)
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        alert(data.msg);// eslint-disable-line no-alert
+        search();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  useEffect(() => {
-    search();
-  }, []);
+  const deleteProduct = (e) => {
+    fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/deleteProduct.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ProdID: e.currentTarget.value })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        alert(data.msg);// eslint-disable-line no-alert
+        search();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   let list = (<></>);
   if (productList) {
     const arr = productList.product;
@@ -90,12 +97,37 @@ const ProductList = () => {
           <TableCell>{product.ProdID}</TableCell>
           <TableCell>{product.UnitPrice}</TableCell>
           <TableCell>{product.Cost}</TableCell>
+          <TableCell>
+            <Button
+              variant="contained"
+              color="secondary"
+              value={product.ProdID}
+              onClick={deleteProduct}
+            >
+              Delete
+            </Button>
+          </TableCell>
         </TableRow>
       ))
       );
     }
   }
 
+  const changeKeyword = (e) => {
+    setKeyword(e.target.value);
+  };
+
+  const changeNewProduct = (e) => {
+    newProduct = {
+      ...newProduct,
+      [e.target.name]: e.target.value
+    };
+    console.log(newProduct);
+  };
+
+  useEffect(() => {
+    search();
+  }, []);
   return (
     <>
       <Helmet>
@@ -110,30 +142,11 @@ const ProductList = () => {
       >
         <Container maxWidth={false}>
           <Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-end'
-              }}
-            >
-              <Button
-                sx={{ mx: 2 }}
-                variant="contained"
-              >
-                Update products
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-              >
-                Delete products
-              </Button>
-            </Box>
-            <Box sx={{ mt: 3 }}>
+            <Box>
               <Box>
                 <Card>
                   <CardContent>
-                    <Grid container>
+                    <Grid container spacing={2}>
                       <Grid item>
                         <TextField
                           InputProps={{
@@ -150,8 +163,7 @@ const ProductList = () => {
                           }}
                           placeholder="Search product"
                           variant="outlined"
-                          onChange={changeHandler}
-                          name="keyword"
+                          onChange={changeKeyword}
                         />
                       </Grid>
                       <Grid item>
@@ -171,33 +183,38 @@ const ProductList = () => {
               <Box>
                 <Card>
                   <CardContent>
-                    <Grid container>
+                    <Grid container spacing={2}>
                       <Grid item>
                         <TextField
                           placeholder="Product Name"
                           variant="outlined"
-                          onChange={changeHandler}
+                          name="ProdName"
+                          onChange={changeNewProduct}
+                          value={newProduct.ProdName}
                         />
                       </Grid>
                       <Grid item>
                         <TextField
                           placeholder="Product ID"
                           variant="outlined"
-                          onChange={changeHandler}
+                          name="ProdID"
+                          onChange={changeNewProduct}
                         />
                       </Grid>
                       <Grid item>
                         <TextField
                           placeholder="Unit Price"
                           variant="outlined"
-                          onChange={changeHandler}
+                          name="UnitPrice"
+                          onChange={changeNewProduct}
                         />
                       </Grid>
                       <Grid item>
                         <TextField
                           placeholder="Cost"
                           variant="outlined"
-                          onChange={changeHandler}
+                          name="Cost"
+                          onChange={changeNewProduct}
                         />
                       </Grid>
                       <Grid item>
@@ -223,6 +240,7 @@ const ProductList = () => {
                     <TableCell>Product ID</TableCell>
                     <TableCell>Unit Price</TableCell>
                     <TableCell>Cost</TableCell>
+                    <TableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>

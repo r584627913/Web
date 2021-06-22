@@ -53,7 +53,7 @@ const Login = () => {
           userData.MonthSalary = user.MonthSalary;
           userData.AnnualLeave = user.AnnualLeave;
         } else {
-          alert(data.msg);
+          alert(data.msg);// eslint-disable-line no-alert
         }
       })
       .catch((err) => {

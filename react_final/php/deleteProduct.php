@@ -13,16 +13,11 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 require 'db_connection.php';
 
 $data = json_decode(file_get_contents("php://input"));
-$sql = "SELECT * FROM `product`";
-
-if (isset($data->keyword)) {
-    $sql .= " WHERE `ProdName` LIKE '%$data->keyword%'";
-}
+$sql = "DELETE FROM `product` WHERE `ProdID`='$data->ProdID'";
 
 $query = mysqli_query($db_connection, $sql);
-if (mysqli_num_rows($query) > 0) {
-    $product = mysqli_fetch_all($query, MYSQLI_ASSOC);
-    echo json_encode(["success" => 1, "msg" => "Search success", "product" =>  $product]);
+if ($query) {
+    echo json_encode(["success" => 1, "msg" => "Product Deleted"]);
 } else {
-    echo json_encode(["success" => 0, "msg" => "Search failed"]);
+    echo json_encode(["success" => 0, "msg" => "Product Not Found!"]);
 }
