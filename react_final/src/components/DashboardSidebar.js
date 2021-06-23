@@ -15,7 +15,7 @@ import {
   AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
   LogIn as LogInIcon,
-  Settings as SettingsIcon,
+  Briefcase as BriefcaseIcon,
   ShoppingBag as ShoppingBagIcon,
   User as UserIcon,
   UserPlus as UserPlusIcon,
@@ -63,8 +63,8 @@ const DashboardSidebar = ({ onMobileClose, openMobile }) => {
     },
     {
       href: '/app/settings',
-      icon: SettingsIcon,
-      title: 'Settings'
+      icon: BriefcaseIcon,
+      title: 'Order'
     },
     {
       href: '/login',
