@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 const SettingsView = () => {
   const [list, setList] = useState();
   const [isInDetail, setIsInDetail] = useState(false);
+  const [currentOrderId, setCurrentOrderId] = useState();
   // let isInDetail = false;
   let dateGap = {
     startDate: '2016-01-02',
@@ -32,6 +33,24 @@ const SettingsView = () => {
     };
   };
 
+  const updateDetailPage = (OrderId) => {
+    fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/updateDetailPage.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ OrderId })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setList(data);
+        setIsInDetail(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const searchOrder = () => {
     fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/searchOrder.php', {
       method: 'POST',
@@ -43,6 +62,7 @@ const SettingsView = () => {
       .then((res) => res.json())
       .then((data) => {
         setList(data);
+        setIsInDetail(false);
       })
       .catch((err) => {
         console.log(err);
@@ -50,7 +70,28 @@ const SettingsView = () => {
   };
 
   const searchDetail = (e) => {
+    let { value } = e.currentTarget.value;
+    value = e.currentTarget.value;
     fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/searchDetail.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ OrderId: value })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCurrentOrderId(value);
+        setList(data);
+        setIsInDetail(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deleteOrder = (e) => {
+    fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/deleteOrder.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -59,8 +100,26 @@ const SettingsView = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setList(data);
-        setIsInDetail(true);
+        alert(data.msg);// eslint-disable-line no-alert
+        searchOrder();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deleteDetail = (e) => {
+    fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/deleteDetail.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ seq: e.currentTarget.value })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        alert(data.msg);// eslint-disable-line no-alert
+        updateDetailPage(currentOrderId);
       })
       .catch((err) => {
         console.log(err);
@@ -82,6 +141,7 @@ const SettingsView = () => {
             <TableCell>Product ID</TableCell>
             <TableCell>Quantity</TableCell>
             <TableCell>Discount</TableCell>
+            <TableCell />
           </TableRow>
         );
         tableContent = (list.detailList.map((detail) => (
@@ -89,6 +149,17 @@ const SettingsView = () => {
             <TableCell>{detail.ProdId}</TableCell>
             <TableCell>{detail.Qty}</TableCell>
             <TableCell>{detail.Discount}</TableCell>
+            <TableCell>
+              <Button
+                variant="contained"
+                color="secondary"
+                value={detail.seq}
+                orderid={detail.OrderId}
+                onClick={deleteDetail}
+              >
+                Delete
+              </Button>
+            </TableCell>
           </TableRow>
         ))
         );
@@ -131,6 +202,7 @@ const SettingsView = () => {
                 variant="contained"
                 color="secondary"
                 value={order.OrderId}
+                onClick={deleteOrder}
               >
                 Delete
               </Button>
@@ -142,50 +214,63 @@ const SettingsView = () => {
     }
   }
 
-  let searchBar = (
-    <Box>
+  let upperBar = (<></>);
+  if (isInDetail) {
+    upperBar = (
       <Card>
         <CardContent>
-          <Grid container spacing={2}>
-            <Grid item>
-              <TextField
-                name="startDate"
-                label="Start Date"
-                type="date"
-                defaultValue="2016-01-02"
-                onChange={changeHandler}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                name="endDate"
-                label="End Date"
-                type="date"
-                defaultValue="2018-12-25"
-                onChange={changeHandler}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                onClick={searchOrder}
-              >
-                Search
-              </Button>
-            </Grid>
-          </Grid>
+          <Button
+            variant="contained"
+            onClick={searchOrder}
+          >
+            Back
+          </Button>
         </CardContent>
       </Card>
-    </Box>
-  );
-  if (isInDetail) {
-    searchBar = (<></>);
+    );
+  } else {
+    upperBar = (
+      <Box>
+        <Card>
+          <CardContent>
+            <Grid container spacing={2}>
+              <Grid item>
+                <TextField
+                  name="startDate"
+                  label="Start Date"
+                  type="date"
+                  defaultValue="2016-01-02"
+                  onChange={changeHandler}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  name="endDate"
+                  label="End Date"
+                  type="date"
+                  defaultValue="2018-12-25"
+                  onChange={changeHandler}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  onClick={searchOrder}
+                >
+                  Search
+                </Button>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      </Box>
+    );
   }
   return (
     <>
@@ -200,7 +285,7 @@ const SettingsView = () => {
         }}
       >
         <Container maxWidth="lg">
-          {searchBar}
+          {upperBar}
           <Box sx={{ pt: 3 }}>
             <Card>
               <CardContent>
