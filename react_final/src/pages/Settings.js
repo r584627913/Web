@@ -17,7 +17,9 @@ import TableRow from '@material-ui/core/TableRow';
 import { useEffect, useState } from 'react';
 
 const SettingsView = () => {
-  const [orderList, setOrderList] = useState();
+  const [list, setList] = useState();
+  const [isInDetail, setIsInDetail] = useState(false);
+  // let isInDetail = false;
   let dateGap = {
     startDate: '2016-01-02',
     endDate: '2018-12-25'
@@ -28,10 +30,9 @@ const SettingsView = () => {
       ...dateGap,
       [e.target.name]: e.target.value
     };
-    console.log(dateGap);
   };
 
-  const search = () => {
+  const searchOrder = () => {
     fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/searchOrder.php', {
       method: 'POST',
       headers: {
@@ -41,8 +42,25 @@ const SettingsView = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setOrderList(data);
-        // console.log(data);
+        setList(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const searchDetail = (e) => {
+    fetch('https://fs.mis.kuas.edu.tw/~s1106137135/webFinalPHP/searchDetail.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ OrderId: e.currentTarget.value })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setList(data);
+        setIsInDetail(true);
       })
       .catch((err) => {
         console.log(err);
@@ -50,37 +68,124 @@ const SettingsView = () => {
   };
 
   useEffect(() => {
-    search();
+    searchOrder();
   }, []);
 
+  let tableHead = (<></>);
   let tableContent = (<></>);
-  if (orderList) {
-    const arr = orderList.orderList;
-    if (arr) {
-      tableContent = (arr.map((order) => (
-        <TableRow key={order.OrderId.concat(order.OrderDate, order.ProdId, order.Qty)}>
-          <TableCell>{order.OrderId}</TableCell>
-          <TableCell>{order.EmpId}</TableCell>
-          <TableCell>{order.CustId}</TableCell>
-          <TableCell>{order.OrderDate}</TableCell>
-          <TableCell>{order.Descript}</TableCell>
-          <TableCell>{order.ProdId}</TableCell>
-          <TableCell>{order.Qty}</TableCell>
-          <TableCell>{order.Discount}</TableCell>
-          <TableCell>
-            <Button
-              variant="contained"
-              color="secondary"
-              value={order.OrderId}
-            // onClick={deleteProduct}
-            >
-              Delete
-            </Button>
-          </TableCell>
-        </TableRow>
-      ))
-      );
+
+  if (list) {
+    if (isInDetail) {
+      if (list.detailList) {
+        tableHead = (
+          <TableRow>
+            <TableCell>Product ID</TableCell>
+            <TableCell>Quantity</TableCell>
+            <TableCell>Discount</TableCell>
+          </TableRow>
+        );
+        tableContent = (list.detailList.map((detail) => (
+          <TableRow key={detail.seq}>
+            <TableCell>{detail.ProdId}</TableCell>
+            <TableCell>{detail.Qty}</TableCell>
+            <TableCell>{detail.Discount}</TableCell>
+          </TableRow>
+        ))
+        );
+      }
     }
+  }
+
+  if (list) {
+    if (!isInDetail) {
+      if (list.orderList) {
+        tableHead = (
+          <TableRow>
+            <TableCell>Order ID</TableCell>
+            <TableCell>Empolyee ID</TableCell>
+            <TableCell>Customer ID</TableCell>
+            <TableCell>Order Date</TableCell>
+            <TableCell>Description</TableCell>
+            <TableCell />
+            <TableCell />
+          </TableRow>
+        );
+        tableContent = (list.orderList.map((order) => (
+          <TableRow key={order.OrderId}>
+            <TableCell>{order.OrderId}</TableCell>
+            <TableCell>{order.EmpId}</TableCell>
+            <TableCell>{order.CustId}</TableCell>
+            <TableCell>{order.OrderDate}</TableCell>
+            <TableCell>{order.Descript}</TableCell>
+            <TableCell>
+              <Button
+                variant="contained"
+                value={order.OrderId}
+                onClick={searchDetail}
+              >
+                Detail
+              </Button>
+            </TableCell>
+            <TableCell>
+              <Button
+                variant="contained"
+                color="secondary"
+                value={order.OrderId}
+              >
+                Delete
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))
+        );
+      }
+    }
+  }
+
+  let searchBar = (
+    <Box>
+      <Card>
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item>
+              <TextField
+                name="startDate"
+                label="Start Date"
+                type="date"
+                defaultValue="2016-01-02"
+                onChange={changeHandler}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                name="endDate"
+                label="End Date"
+                type="date"
+                defaultValue="2018-12-25"
+                onChange={changeHandler}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                onClick={searchOrder}
+              >
+                Search
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </Box>
+  );
+  if (isInDetail) {
+    searchBar = (<></>);
   }
   return (
     <>
@@ -95,63 +200,14 @@ const SettingsView = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Box>
-            <Card>
-              <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item>
-                    <TextField
-                      name="startDate"
-                      label="Start Date"
-                      type="date"
-                      defaultValue="2016-01-02"
-                      onChange={changeHandler}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      name="endDate"
-                      label="End Date"
-                      type="date"
-                      defaultValue="2018-12-25"
-                      onChange={changeHandler}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      onClick={search}
-                    >
-                      Search
-                    </Button>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Box>
+          {searchBar}
           <Box sx={{ pt: 3 }}>
             <Card>
               <CardContent>
                 <TableContainer>
                   <Table aria-label="simple table">
                     <TableHead>
-                      <TableRow>
-                        <TableCell>Order ID</TableCell>
-                        <TableCell>Empolyee ID</TableCell>
-                        <TableCell>Customer ID</TableCell>
-                        <TableCell>Order Date</TableCell>
-                        <TableCell>Description</TableCell>
-                        <TableCell>Product ID</TableCell>
-                        <TableCell>Quantity</TableCell>
-                        <TableCell>Discount</TableCell>
-                        <TableCell />
-                      </TableRow>
+                      {tableHead}
                     </TableHead>
                     <TableBody>
                       {tableContent}

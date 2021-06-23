@@ -13,16 +13,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 require 'db_connection.php';
 
 $data = json_decode(file_get_contents("php://input"));
-$sql = "SELECT * FROM `salesorder`";
-
-if (isset($data->startDate) && isset($data->endDate)) {
-    $sql .= " WHERE `OrderDate` BETWEEN '$data->startDate' AND '$data->endDate'";
-}
+$sql = "SELECT * FROM `orderdetail` WHERE `OrderId`=$data->OrderId";
 
 $query = mysqli_query($db_connection, $sql);
 if (mysqli_num_rows($query) > 0) {
-    $orderList = mysqli_fetch_all($query, MYSQLI_ASSOC);
-    echo json_encode(["success" => 1, "msg" => "Search success", "orderList" => $orderList]);
+    $detailList = mysqli_fetch_all($query, MYSQLI_ASSOC);
+    echo json_encode(["success" => 1, "msg" => "Search success", "detailList" => $detailList]);
 } else {
     echo json_encode(["success" => 0, "msg" => "Search failed"]);
 }
